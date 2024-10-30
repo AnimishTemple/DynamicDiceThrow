@@ -19,6 +19,11 @@ The Activity layout files for both Portrait and Landscape are already provided
 */
 
 class MainActivity : AppCompatActivity(), ButtonFragment.ButtonInterface {
+
+    private lateinit var button: ButtonFragment
+    private lateinit var die: DieFragment
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,13 +32,42 @@ class MainActivity : AppCompatActivity(), ButtonFragment.ButtonInterface {
             - Show only Button Fragment if portrait
             - show both fragments if Landscape
           */
+
+        button = ButtonFragment()
+        die = DieFragment()
+
+        if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container1, button)
+                .commit()
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container2, die)
+                .commit()
+        } else {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container1, button)
+                .commit()
+        }
+
+
+
+
     }
 
     /* TODO 2: switch fragments if portrait (no need to switch fragments if Landscape)
         */
     // Remember to place Fragment transactions on BackStack so then can be reversed
     override fun buttonClicked() {
-
+        if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container1, die)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
 
